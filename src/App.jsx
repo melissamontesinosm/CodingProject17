@@ -1,35 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// Importing React library for building the user interface
+import React from 'react'; 
 
+// Importing the Gallery component from the local 'Gallery' file
+import Gallery from './Gallery';
+
+// Defining the main App component
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    // Main container div with a className 'App' for styling purposes
+    <div className="App">
+      {/* Header section containing the application title */}
+      <header>
+        <h1>Tour Comparison App</h1>
+      </header>
+      {/* Rendering the imported Gallery component */}
+      <Gallery />
+    </div>
+  );
 }
 
-export default App
+// Exporting the App component to be used in other parts of the application
+export default App;
+
