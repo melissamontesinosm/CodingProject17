@@ -2,7 +2,10 @@
 import React from 'react'; 
 
 // Importing the Gallery component from the local 'Gallery' file
-import Gallery from './Gallery';
+import Gallery from './components/Gallery.jsx';
+
+import './App.css';
+
 
 // Defining the main App component
 function App() {

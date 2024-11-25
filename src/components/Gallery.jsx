@@ -1,93 +1,90 @@
-// Import necessary React hooks for state and side-effects
 import React, { useState, useEffect } from 'react';
-
-// Import external CSS for styling the Gallery component
 import './Gallery.css';
 
 function Gallery() {
-  // State to store tour data
+  // State to store the list of tours
   const [tours, setTours] = useState([]);
-  // State to track loading status
+  // State to track the loading status of the data fetch
   const [loading, setLoading] = useState(true);
-  // State to store any error messages
+  // State to store any error message that occurs during data fetching
   const [error, setError] = useState('');
 
-  // useEffect to fetch tour data when the component mounts
+  // Fetch tour data from the API when the component mounts
   useEffect(() => {
     const fetchTours = async () => {
       console.log("Starting fetch...");
-      setLoading(true); // Set loading state before fetching data
-
+      setLoading(true); // Set loading to true while fetching data
       try {
-        const response = await fetch('/api/react-tours-project'); // Fetch data from the API endpoint
+        // Make a request to the API
+        const response = await fetch('/api/react-tours-project');
         console.log("Fetch Response: ", response);
 
-        // Check if the response is not OK
+        // Check if the response is not OK (e.g., 404 or 500 errors)
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`); // Handle HTTP errors
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const data = await response.json(); // Parse response JSON
+        // Parse the response data as JSON
+        const data = await response.json();
         console.log("Fetched Data: ", data);
 
-        // Set the fetched data into the state with an added 'showMore' property
+        // Add 'showMore' property to each tour object and update state
         setTours(
           data.map((tour) => ({
             ...tour,
-            showMore: false, // Initial value for showMore is false
+            showMore: false, // 'showMore' is initially set to false
           }))
         );
       } catch (err) {
-        console.error("Fetch Error: ", err); // Log errors for debugging
-        setError(`Error: ${err.message}`); // Update error state with the error message
+        // Log any fetch errors and display an error message
+        console.error("Fetch Error: ", err);
+        setError(`Error: ${err.message}`);
       } finally {
-        setLoading(false); // Set loading state to false after fetching is complete
+        // Set loading to false after the fetch operation completes
+        setLoading(false);
       }
     };
 
-    fetchTours(); // Invoke the function
-  }, []); // Empty dependency array ensures this effect runs only once
+    fetchTours(); // Call the fetch function when the component mounts
+  }, []); // Empty dependency array ensures this runs only once on mount
 
-  // Function to remove a tour from the list by its ID
+  // Remove a tour from the list based on its ID
   const handleRemoveTour = (id) => {
-    setTours(tours.filter((tour) => tour.id !== id)); // Filter out the tour with the matching ID
+    setTours(tours.filter((tour) => tour.id !== id)); // Filter out the tour with the specified ID
   };
 
-  // Function to toggle the 'showMore' property of a specific tour
+  // Toggle the 'showMore' state for a specific tour to show more or less of the description
   const toggleReadMore = (id) => {
     setTours(
       tours.map((tour) =>
         tour.id === id
-          ? { ...tour, showMore: !tour.showMore } // Toggle 'showMore' property
+          ? { ...tour, showMore: !tour.showMore } // Toggle the 'showMore' property
           : tour
       )
     );
   };
 
-  // Render a loading message if data is still being fetched
+  // If the data is still loading, display a loading message
   if (loading) return <div className="loading">Loading...</div>;
 
-  // Render an error message if an error occurred during the fetch
+  // If there's an error during the fetch operation, display the error message
   if (error) return <div className="error">{error}</div>;
 
-  // Main component render
+  // Render the tour cards once the data has loaded
   return (
     <div className="gallery">
-      {/* Iterate through the tours array and render a card for each tour */}
       {tours.map((tour) => (
         <div key={tour.id} className="tour-card">
-          {/* Render the tour image */}
           <img src={tour.image} alt={tour.name} className="tour-image" />
-          {/* Tour information */}
           <div className="tour-info">
             <h2>{tour.name}</h2>
             <h4>${tour.price}</h4>
-            {/* Show truncated or full description based on 'showMore' */}
             <p>
+              {/* Show either the full description or a truncated version based on 'showMore' */}
               {tour.showMore ? tour.info : `${tour.info.substring(0, 100)}...`}
               <button
                 className="toggle-btn"
-                onClick={() => toggleReadMore(tour.id)}
+                onClick={() => toggleReadMore(tour.id)} // Toggle between 'Read More' and 'Show Less'
               >
                 {tour.showMore ? 'Show Less' : 'Read More'}
               </button>
@@ -95,7 +92,7 @@ function Gallery() {
             {/* Button to remove the tour */}
             <button
               className="remove-btn"
-              onClick={() => handleRemoveTour(tour.id)}
+              onClick={() => handleRemoveTour(tour.id)} // Remove the current tour
             >
               Not Interested
             </button>
