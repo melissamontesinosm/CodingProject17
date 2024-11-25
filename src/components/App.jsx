@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       {/* Header section containing the application title */}
       <header>
-        <h1>Tour Comparison App</h1>
+        <h1> Tour Guide App </h1>
       </header>
       {/* Rendering the imported Gallery component */}
       <Gallery />
